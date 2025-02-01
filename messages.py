@@ -15,7 +15,7 @@ MESSAGES = {
     },
     "tr": {
         "welcome": "Wordle Yardımcısına Hoş Geldiniz!",
-        "patterns": f"\n• {nel}[letter]: Kelimede hiç bulunmayan harf. Bu harf, kelimenin hiçbir yerinde yer almaz.\n• [lowercase_letter]: Kelimede bulunan ancak yanlış konumda olan harf. Bu harf doğru konumda değil.\n• [uppercase_letter]: Kelimede doğru konumda bulunan harf. Bu harf, kelimenin doğru pozisyonundadır.",        
+        "patterns": f"\n• {nel}[harf]: Kelimede hiç bulunmayan harf. Bu harf, kelimenin hiçbir yerinde yer almaz.\n• [küçük_harf]: Kelimede bulunan ancak yanlış konumda olan harf. Bu harf doğru konumda değil.\n• [büyük_harf]: Kelimede doğru konumda bulunan harf. Bu harf, kelimenin doğru pozisyonundadır.",        
         "choose_pattern": f"Kelime desen(ler)inizi virgülle ayırarak girin (örn. {nel}a{nel}ş{nel}uR{nel}e,{nel}e{nel}krA{nel}n), çıkmak için '{exit_input}' yazın:",
         "invalid_input": "Geçersiz giriş. Lütfen bir kelime deseni girin.",
         "no_matches": "Eşleşen kelime bulunamadı.",
