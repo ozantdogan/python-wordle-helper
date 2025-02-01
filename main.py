@@ -20,11 +20,11 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
             i += 1
 
         for i, char in enumerate(hints):
-            if char == wildcard:
+            if char == wildcard or char.lower() in excluded_letters:
                 continue  
             elif char.isupper():
                 included_letters.add(char.lower())  
-            elif char.islower() and char not in excluded_letters:
+            elif char.islower():
                 included_letters.add(char) 
 
         for word in filtered:
@@ -40,9 +40,9 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
             for j, char in enumerate(hints):
                 if char == wildcard or char == nel:
                     continue  
-                elif char.isupper():
+                elif char.isupper() and hints[j-1] != nel:
                     i += 1
-                    if word[i] != char.lower():  
+                    if word[i] != char.lower(): 
                         match = False
                         break
                 elif char.islower() or hints[j-1] == nel:  
