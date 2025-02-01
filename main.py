@@ -33,9 +33,6 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
             if not all(letter in word for letter in included_letters):
                 continue
 
-            if any(letter in word for letter in excluded_letters):
-                continue
-
             i = -1
             for j, char in enumerate(hints):
                 if char == wildcard or char == nel:
@@ -54,7 +51,7 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
             if match:
                 new_filtered.add(word)
 
-        filtered = new_filtered  
+        filtered = sorted(new_filtered)
 
     return list(filtered)
 
@@ -62,15 +59,18 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
 def main() -> None:
     
     lang = input(MESSAGES["en"]["choose_language"]).strip().lower()
-    if lang not in {"en", "tr"}:
+    if lang not in OPTIONS["languages"]:
         print(MESSAGES["en"]["invalid_language"])
         lang = "en"  # Default to English
 
     print(MESSAGES[lang]["loading_words"])
 
     file_name = f"languages/{lang}.json"
-    with open(file_name, 'r', encoding='utf-8') as file:
-        valid_words = set(json.load(file))
+    try:
+        with open(file_name, 'r', encoding='utf-8') as file:
+            valid_words = set(json.load(file))
+    except Exception as e:
+        print(f"Error loading JSON file: {e}")
 
     print(MESSAGES[lang]["welcome"] + "\n")
     print(MESSAGES[lang]["patterns"] + "\n")
