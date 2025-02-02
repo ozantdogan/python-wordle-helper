@@ -1,13 +1,15 @@
 import json
 from options import *
 from messages import MESSAGES
-from typing import List, Set
+from typing import List, Set, Dict
+from collections import defaultdict
 
 def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[str]:
     filtered = set(valid_words)
     new_filtered = set()
     letter_count = dict()
     correct_letters_location = dict()
+    used_letters_location = defaultdict(set)
     existing_letters = set()
 
     for hints in hints_list:
@@ -33,6 +35,7 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
             
             #found but wrong position
             elif char.islower():
+                used_letters_location[char.lower()].add(j)
                 existing_letters.add(char)
                 hint_letters.append(char)
                 j = j + 1
@@ -45,12 +48,15 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
     for word in filtered:
         match = True
 
-        for char in word:
+        if(word == 'retro'):
+            print(word)
+
+        for i, char in enumerate(word):
             if(char in letter_count and (word.count(char) < letter_count[char] or letter_count[char] < 0)):
                 match = False
                 break
 
-            if(word.index(char) in correct_letters_location and char != correct_letters_location[word.index(char)]):
+            if(i in correct_letters_location and char != correct_letters_location[i]):
                 match = False
                 break
 
@@ -58,7 +64,13 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
                 if(word.count(existing_char) == 0):
                     match = False
                     break
-        
+            
+            if char in used_letters_location:
+                char_positions = {i for i, c in enumerate(word) if c == char}
+                if not char_positions.isdisjoint(used_letters_location[char]):
+                    match = False
+                    break    
+
         if(match == True):
             new_filtered.add(word)
     
