@@ -46,7 +46,7 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
         match = True
 
         for char in word:
-            if(char in letter_count and letter_count[char] != word.count(char)):
+            if(char in letter_count and (word.count(char) < letter_count[char] or letter_count[char] < 0)):
                 match = False
                 break
 
