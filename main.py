@@ -7,7 +7,8 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
     filtered = set(valid_words)
 
     for hints in hints_list:
-        included_letters = set()  
+        included_letters = set()
+        correct_letters = set()  
         excluded_letters = set()  
         new_filtered = set()
 
@@ -20,10 +21,11 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
             i += 1
 
         for i, char in enumerate(hints):
-            if char == wildcard or char.lower() in excluded_letters:
+            if char == wildcard or (char.isalpha() and hints[i-1] == nel):
                 continue  
             elif char.isupper():
-                included_letters.add(char.lower())  
+                included_letters.add(char.lower())
+                correct_letters.add(char.lower())
             elif char.islower():
                 included_letters.add(char) 
 
@@ -32,6 +34,10 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
 
             if not all(letter in word for letter in included_letters):
                 continue
+
+            if not any(letter in excluded_letters for letter in correct_letters):
+                if any(letter in word for letter in excluded_letters):
+                    continue
 
             i = -1
             for j, char in enumerate(hints):
