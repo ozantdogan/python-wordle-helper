@@ -28,7 +28,7 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
 
             #found and correct position
             elif char.isupper():
-                correct_letters_location[j] = char.lower()
+                correct_letters_location[j] = char
                 existing_letters.add(char.lower())
                 hint_letters.append(char)
                 j = j + 1
@@ -48,15 +48,12 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
     for word in filtered:
         match = True
 
-        if(word == 'retro'):
-            print(word)
-
         for i, char in enumerate(word):
             if(char in letter_count and (word.count(char) < letter_count[char] or letter_count[char] < 0)):
                 match = False
                 break
 
-            if(i in correct_letters_location and char != correct_letters_location[i]):
+            if(i in correct_letters_location and char.upper() != correct_letters_location[i]):
                 match = False
                 break
 
