@@ -5,62 +5,66 @@ from typing import List, Set
 
 def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[str]:
     filtered = set(valid_words)
+    new_filtered = set()
+    letter_count = dict()
+    correct_letters_location = dict()
+    existing_letters = set()
 
     for hints in hints_list:
-        included_letters = set()
-        correct_letters = set()  
-        excluded_letters = set()  
-        new_filtered = set()
-
-        i = 0
-        while i < len(hints):
-            if hints[i] == nel:
-                if i + 1 < len(hints) and hints[i + 1].isalpha():
-                    excluded_letters.add(hints[i + 1].lower())  
-                    i += 1  
-            i += 1
-
+        j = 0
+        hint_letters = list()
         for i, char in enumerate(hints):
-            if char == wildcard or (char.isalpha() and hints[i-1] == nel):
-                continue  
-            elif char.isupper():
-                included_letters.add(char.lower())
-                correct_letters.add(char.lower())
-            elif char.islower():
-                included_letters.add(char) 
-
-        for word in filtered:
-            match = True
-
-            if not all(letter in word for letter in included_letters):
+            if char == wildcard or char == nel:
                 continue
 
-            if not any(letter in excluded_letters for letter in correct_letters):
-                if any(letter in word for letter in excluded_letters):
-                    continue
+            #not found in the word
+            elif char.isalpha() and hints[i-1] == nel:
+                j = j + 1
+                if(char not in letter_count):
+                    letter_count[char.lower()] = -1
+                continue
 
-            i = -1
-            for j, char in enumerate(hints):
-                if char == wildcard or char == nel:
-                    continue  
-                elif char.isupper() and hints[j-1] != nel:
-                    i += 1
-                    if word[i] != char.lower(): 
-                        match = False
-                        break
-                elif char.islower() or hints[j-1] == nel:  
-                    i += 1
-                    if word[i] == char:  
-                        match = False
-                        break
+            #found and correct position
+            elif char.isupper():
+                correct_letters_location[j] = char.lower()
+                existing_letters.add(char.lower())
+                hint_letters.append(char)
+                j = j + 1
+            
+            #found but wrong position
+            elif char.islower():
+                existing_letters.add(char)
+                hint_letters.append(char)
+                j = j + 1
 
-            if match:
-                new_filtered.add(word)
+            if(char in letter_count and (hint_letters.count(char) > letter_count[char] or letter_count[char] == -1)):
+                letter_count[char.lower()] = hint_letters.count(char)
+            else:
+                letter_count[char.lower()] = hint_letters.count(char)
+    
+    for word in filtered:
+        match = True
 
-        filtered = sorted(new_filtered)
+        for char in word:
+            if(char in letter_count and letter_count[char] != word.count(char)):
+                match = False
+                break
 
-    return list(filtered)
+            if(word.index(char) in correct_letters_location and char != correct_letters_location[word.index(char)]):
+                match = False
+                break
 
+            for existing_char in existing_letters:
+                if(word.count(existing_char) == 0):
+                    match = False
+                    break
+        
+        if(match == True):
+            new_filtered.add(word)
+    
+    filtered = sorted(new_filtered)
+
+    return list(filtered)            
 
 def main() -> None:
     

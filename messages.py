@@ -4,7 +4,7 @@ MESSAGES = {
     "en": {
         "welcome": "Welcome to Wordle Helper!",
         "patterns": f"• {nel}[letter]: A letter that does not exist in the word at all.\n• [lowercase_letter]: A letter that exists in the word but is in the wrong position.\n• [uppercase_letter]: A letter that is in the correct position in the word.",        
-        "choose_pattern": f"Enter your word pattern(s) separated by commas (e.g., {nel}b{nel}aK{nel}e{nel}r,{nel}tOw{nel}e{nel}l), or type '0{exit_input}' to exit:",
+        "choose_pattern": f"Enter your word pattern(s) separated by commas (e.g., {nel}b{nel}aK{nel}e{nel}r,{nel}tOw{nel}e{nel}l), or type '{exit_input}' to exit:",
         "invalid_input": "Invalid input. Please enter a word pattern.",
         "no_matches": "No matching words found.",
         "matches_found": "Possible words ({count} matches):",
