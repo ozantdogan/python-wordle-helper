@@ -84,8 +84,6 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
 
     for word in filtered:
         match = True
-        if(word == 'kavun'):
-            print(word)
 
         for i, char in enumerate(word):
             if any(word.lower().count(existing_char) == 0 for existing_char in existing_letters):
