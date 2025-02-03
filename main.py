@@ -50,6 +50,7 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
     correct_letters_location = dict()
     used_letters_location = dict()
     existing_letters = set()
+    non_existing_letters = set()
 
     for hints in hints_list:
         j = 0
@@ -59,9 +60,10 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
                 continue
 
             elif char.isalpha() and hints[i - 1] == nel:
-                j = j + 1
-                letter_count[char.lower()] = -1
-                continue
+                non_existing_letters.add(char)
+                if(char not in letter_count):
+                    letter_count[char.lower()] = -1
+                j += 1
 
             elif char.isupper():
                 correct_letters_location[j] = char
@@ -75,10 +77,15 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
                 hint_letters.append(char)
                 j += 1
 
-            letter_count[char] = max(hint_letters.count(char), letter_count.get(char.lower(), 0))
+            if(char in non_existing_letters):
+                letter_count[char] = hint_letters.count(char)
+            else:
+                letter_count[char] = max(hint_letters.count(char), letter_count.get(char.lower(), 0))
 
     for word in filtered:
         match = True
+        if(word == 'kavun'):
+            print(word)
 
         for i, char in enumerate(word):
             if any(word.lower().count(existing_char) == 0 for existing_char in existing_letters):
@@ -93,8 +100,7 @@ def apply_wordle_filter(hints_list: List[str], valid_words: Set[str]) -> List[st
                 word = word[:i] + word[i].upper() + word[i + 1:]
 
         for i, char in enumerate(word):
-
-            if char in letter_count and (word.count(char) < letter_count[char] or letter_count[char] < 0):
+            if char in letter_count and (word.count(char) != letter_count[char] or letter_count[char] < 0):
                 match = False
                 break
             
