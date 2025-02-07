@@ -3,6 +3,8 @@ from colorama import Fore, Style
 import random
 import os
 from typing import List
+from messages import MESSAGES
+from options import OPTIONS
 
 empty_row = "_ _ _ _ _"
 
@@ -96,9 +98,9 @@ def print_board(board: List[str]):
         print(row + "\n")
 
 def main():
-    lang = input("Enter language (en/tr): ").strip().lower()
-    if lang not in ["en", "tr"]:
-        print(Fore.RED + "Invalid language! Defaulting to English." + Style.RESET_ALL)
+    lang = input(Fore.CYAN + MESSAGES["en"]["choose_language"] + Style.RESET_ALL).strip().lower()
+    if lang not in OPTIONS["languages"]:
+        print(Fore.RED + MESSAGES["en"]["invalid_language"] + Style.RESET_ALL)
         lang = "en"
 
     init_key_status(lang)
@@ -117,7 +119,10 @@ def main():
         while True:
             user_input = input("> ").lower().strip()
             if user_input not in word_list:
-                print(Fore.RED + "Invalid input!" + Style.RESET_ALL)
+                if(len(user_input) != 5):
+                    print(Fore.RED + MESSAGES[lang]["word_must_have_5_letters"] + Style.RESET_ALL)
+                else:
+                    print(Fore.RED + MESSAGES[lang]["word_not_found"] + Style.RESET_ALL)
             else:
                 evaluation = evaluate(user_input, answer)
                 
@@ -133,11 +138,11 @@ def main():
                 print_keyboard(lang)
 
                 if user_input == answer:
-                    print(Fore.GREEN + "You won! 🎉" + Style.RESET_ALL)
+                    print(Fore.GREEN + MESSAGES[lang]["you_won"] + Style.RESET_ALL)
                     return
                 break
 
-    print(Fore.LIGHTBLACK_EX + f"Game Over! The correct word was: {answer}" + Style.RESET_ALL)
+    print(Fore.LIGHTBLACK_EX + MESSAGES[lang]["game_over"].format(answer=answer) + Style.RESET_ALL)
 
 if __name__ == "__main__":
     main()

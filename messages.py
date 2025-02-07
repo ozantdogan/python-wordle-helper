@@ -12,6 +12,10 @@ MESSAGES = {
         "choose_language": f"Choose language / Dil seçin ({languages}): ",
         "invalid_language": "Invalid choice. Defaulting to English...",
         "loading_words": "Loading word list...",
+        "word_not_found":"Word not found.",
+        "word_must_have_5_letters":"Word must have 5 letters.",
+        "you_won":"You won! 🎉",
+        "game_over":"Game over! Correct word: {answer}"
     },
     "tr": {
         "welcome": "Wordle Yardımcısına Hoş Geldiniz!",
@@ -24,5 +28,9 @@ MESSAGES = {
         "choose_language": f"Dil seçin / Choose language ({languages}): ",
         "invalid_language": "Geçersiz seçim. Varsayılan olarak İngilizce seçildi...",
         "loading_words": "Kelime listesi yükleniyor...",
+        "word_not_found":"Kelime bulunamadı.",
+        "word_must_have_5_letters":"Kelime 5 harf içermelidir.",
+        "you_won":"Kazandın! 🎉",
+        "game_over":"Oyun bitti! Doğru kelime: {answer}"
     }
 }
