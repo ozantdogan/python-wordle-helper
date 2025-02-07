@@ -1,0 +1,143 @@
+import json
+from colorama import Fore, Style
+import random
+import os
+from typing import List
+
+empty_row = "_ _ _ _ _"
+
+# Keyboard layouts
+KEYBOARDS = {
+    "en": ["qwertyuiop", "asdfghjkl", "zxcvbnm"],
+    "tr": ["qwertyuıopğü", "asdfghjklşi", "zxcvbnmöç"]
+}
+
+# Dynamic keyboard status
+key_status = {}
+
+def init_key_status(lang: str):
+    """Initialize key statuses based on the selected language"""
+    global key_status
+    layout = "".join(KEYBOARDS.get(lang, KEYBOARDS["en"]))
+    key_status = {char: "neutral" for char in layout}
+
+def set_key(key_name: str, status: str):
+    """Update the status of a key"""
+    if key_name in key_status:
+        if key_status[key_name] in ["neutral", "absent"]:
+            key_status[key_name] = status
+        elif key_status[key_name] == "incorrect" and status == "correct":
+            key_status[key_name] = status
+
+def print_keyboard(lang: str):
+    """Print the keyboard with color coding"""
+    layout = KEYBOARDS.get(lang, KEYBOARDS["en"])
+    color_map = {
+        "correct": Fore.GREEN,
+        "incorrect": Fore.YELLOW,
+        "absent": Fore.LIGHTBLACK_EX,
+        "neutral": Fore.WHITE
+    }
+
+    for row in layout:
+        for char in row:
+            print(color_map[key_status[char]] + char.lower() + " " + Style.RESET_ALL, end="")
+        print()
+
+def initiliaze_board(board, attempts=6):
+    """Initialize the board with empty rows"""
+    return [empty_row] * attempts
+
+def load_words(lang: str) -> list:
+    """Load word list from JSON file"""
+    file_name = f"languages/{lang}.json"
+    try:
+        with open(file_name, 'r', encoding='utf-8') as file:
+            return list(json.load(file))
+    except Exception as e:
+        print(Fore.RED + f"Error loading JSON file: {e}" + Style.RESET_ALL)
+        return []
+
+def evaluate(user_input: str, answer: str):
+    """Evaluate the user input and return the color-coded result"""
+    evaluation = ["null"] * len(user_input)
+    remaining_chars = list(answer)
+
+    for i, char in enumerate(user_input):
+        if answer[i] == char:
+            evaluation[i] = "correct"
+            remaining_chars.remove(char)
+    
+    for i, char in enumerate(user_input):
+        if evaluation[i] == "null":
+            if char in remaining_chars:
+                evaluation[i] = "incorrect"
+                remaining_chars.remove(char)
+            else:
+                evaluation[i] = "absent"
+    
+    return evaluation
+
+def colorize_guess(user_input: List[str], evaluations):
+    """Colorize the guessed word based on the evaluation"""
+    result = ""
+    for i, evaluation in enumerate(evaluations):
+        if evaluation == "correct":
+            result += Fore.GREEN + user_input[i].upper() + " " + Style.RESET_ALL
+        elif evaluation == "incorrect":
+            result += Fore.YELLOW + user_input[i].upper() + " " + Style.RESET_ALL
+        else:
+            result += Fore.LIGHTBLACK_EX + user_input[i].upper() + " " + Style.RESET_ALL 
+    return result
+
+def print_board(board: List[str]):
+    """Print the current board state"""
+    for row in board:
+        print(row + "\n")
+
+def main():
+    lang = input("Enter language (en/tr): ").strip().lower()
+    if lang not in ["en", "tr"]:
+        print(Fore.RED + "Invalid language! Defaulting to English." + Style.RESET_ALL)
+        lang = "en"
+
+    init_key_status(lang)
+    word_list = load_words(lang)
+    attempts = 6
+
+    random.shuffle(word_list)
+    answer = random.choice(word_list)
+    board_state = initiliaze_board([], attempts)
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print_board(board_state)
+    print_keyboard(lang)
+
+    for i in range(attempts):
+        while True:
+            user_input = input("> ").lower().strip()
+            if user_input not in word_list:
+                print(Fore.RED + "Invalid input!" + Style.RESET_ALL)
+            else:
+                evaluation = evaluate(user_input, answer)
+                
+                # Update keyboard colors
+                for j, char in enumerate(user_input):
+                    set_key(char, evaluation[j])
+
+                colorized_guess = colorize_guess(user_input, evaluation)
+                board_state[i] = colorized_guess
+                
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print_board(board_state)
+                print_keyboard(lang)
+
+                if user_input == answer:
+                    print(Fore.GREEN + "You won! 🎉" + Style.RESET_ALL)
+                    return
+                break
+
+    print(Fore.LIGHTBLACK_EX + f"Game Over! The correct word was: {answer}" + Style.RESET_ALL)
+
+if __name__ == "__main__":
+    main()
