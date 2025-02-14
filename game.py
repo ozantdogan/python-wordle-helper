@@ -97,12 +97,9 @@ def print_board(board: List[str]):
     for row in board:
         print(row + "\n")
 
-def main():
-    lang = input(Fore.CYAN + MESSAGES["en"]["choose_language"] + Style.RESET_ALL).strip().lower()
-    if lang not in OPTIONS["languages"]:
-        print(Fore.RED + MESSAGES["en"]["invalid_language"] + Style.RESET_ALL)
-        lang = "en"
+def launch(lang: str):
 
+    result = True
     init_key_status(lang)
     word_list = load_words(lang)
     attempts = 6
@@ -115,10 +112,17 @@ def main():
     print_board(board_state)
     print_keyboard(lang)
 
+    attempts = 6
     for i in range(attempts):
-        while True:
+        while result:
             user_input = input("> ").lower().strip()
-            if user_input not in word_list:
+            #Give up
+            if(user_input == '0'):
+                result = False
+                break
+            elif(user_input == '/show'):
+                print(Fore.MAGENTA + answer + Style.RESET_ALL)
+            elif user_input not in word_list:
                 if(len(user_input) != 5):
                     print(Fore.RED + MESSAGES[lang]["word_must_have_5_letters"] + Style.RESET_ALL)
                 else:
@@ -139,10 +143,36 @@ def main():
 
                 if user_input == answer:
                     print(Fore.GREEN + MESSAGES[lang]["you_won"] + Style.RESET_ALL)
-                    return
+                    return 1
                 break
+    
+    print(Fore.LIGHTBLACK_EX + MESSAGES[lang]["game_over"].format(answer=Fore.MAGENTA + answer + Style.RESET_ALL) + Style.RESET_ALL)
+    return 0
 
-    print(Fore.LIGHTBLACK_EX + MESSAGES[lang]["game_over"].format(answer=answer) + Style.RESET_ALL)
+def choose_language():
+
+    lang = input(Fore.CYAN + MESSAGES["en"]["choose_language"] + Style.RESET_ALL).strip().lower()
+    if lang not in OPTIONS["languages"]:
+        print(Fore.RED + MESSAGES["en"]["invalid_language"] + Style.RESET_ALL)
+        lang = "en"
+
+    return lang
+
+def main():
+    lang = choose_language()
+
+    while(True):
+        launch(lang)
+        print(Fore.CYAN + "1." + MESSAGES[lang]["play_again"] + Style.RESET_ALL)
+        print(Fore.CYAN + "2." + MESSAGES[lang]["change_language"] + Style.RESET_ALL)
+        user_input = input("> ").lower().strip()
+        if(user_input == '1'):
+            continue
+        elif(user_input == '2'):
+            os.system('cls' if os.name == 'nt' else 'clear')
+            lang = choose_language()
+        else:
+            break
 
 if __name__ == "__main__":
     main()

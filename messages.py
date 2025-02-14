@@ -15,7 +15,9 @@ MESSAGES = {
         "word_not_found":"Word not found.",
         "word_must_have_5_letters":"Word must have 5 letters.",
         "you_won":"You won! 🎉",
-        "game_over":"Game over! Correct word: {answer}"
+        "game_over":"Game over! Correct word: {answer}",
+        "play_again":"Play again",
+        "change_language":"Change language"
     },
     "tr": {
         "welcome": "Wordle Yardımcısına Hoş Geldiniz!",
@@ -31,6 +33,8 @@ MESSAGES = {
         "word_not_found":"Kelime bulunamadı.",
         "word_must_have_5_letters":"Kelime 5 harf içermelidir.",
         "you_won":"Kazandın! 🎉",
-        "game_over":"Oyun bitti! Doğru kelime: {answer}"
+        "game_over":"Oyun bitti! Doğru kelime: {answer}",
+        "play_again":"Tekrar oyna",
+        "change_language":"Dil değiştir"
     }
 }
