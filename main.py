@@ -2,7 +2,7 @@ import json
 import colorama
 from colorama import Fore, Style
 from options import *
-from messages import MESSAGES
+from languages.strings import MESSAGES
 from typing import List, Set, Dict
 from collections import defaultdict, Counter
 

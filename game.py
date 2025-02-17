@@ -3,16 +3,10 @@ from colorama import Fore, Style
 import random
 import os
 from typing import List
-from messages import MESSAGES
+from languages.strings import MESSAGES, KEYBOARDS
 from options import OPTIONS
 
 empty_row = "_ _ _ _ _"
-
-# Keyboard layouts
-KEYBOARDS = {
-    "en": ["qwertyuiop", "asdfghjkl", "zxcvbnm"],
-    "tr": ["qwertyuıopğü", "asdfghjklşi", "zxcvbnmöç"]
-}
 
 # Dynamic keyboard status
 key_status = {}
@@ -101,7 +95,7 @@ def launch(lang: str):
 
     result = True
     init_key_status(lang)
-    word_list = load_words(lang)
+    word_list = [word.lower() for word in load_words(lang)]
     attempts = 6
 
     random.shuffle(word_list)
