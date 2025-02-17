@@ -5,7 +5,7 @@ os.environ["PYDEVD_CONTAINER_RANDOM_ACCESS_MAX_ITEMS"] = "10000"
 APP_SETTINGS = {
     "wildcard": ".",
     "non_existing_letter": "-",
-    "languages": ["en", "tr", "fr"],
+    "languages": ["en", "tr", "fr", "it"],
     "exit_input": "0"
 }
 

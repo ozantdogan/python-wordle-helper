@@ -63,11 +63,33 @@ MESSAGES = {
         "change_language": "Changer de langue",
         "give_up": "Abandonner",
         "show_answer": "Afficher la réponse"
+    },
+    "it": {
+        "welcome": "Benvenuto in Wordle Helper!",
+        "patterns": f"• {nel}[lettera]: Una lettera che non esiste affatto nella parola.\n• [lettera minuscola]: Una lettera che esiste nella parola ma è nella posizione sbagliata.\n• [LETTERA MAIUSCOLA]: Una lettera che è nella posizione corretta nella parola.",        
+        "choose_pattern": f"Inserisci il tuo schema di parole separato da virgole (es. {nel}b{nel}aK{nel}e{nel}r,{nel}tOw{nel}e{nel}l), oppure digita '{exit_input}' per uscire:",
+        "invalid_input": "Input non valido. Inserisci uno schema di parola.",
+        "no_matches": "Nessuna parola corrispondente trovata.",
+        "matches_found": "Parole possibili ({count} corrispondenze):",
+        "goodbye": "Arrivederci!",
+        "choose_language": "Scegli la lingua",
+        "invalid_language": "Scelta non valida. Impostazione predefinita in italiano...",
+        "loading_words": "Caricamento elenco parole...",
+        "word_not_found": "Parola non trovata.",
+        "word_must_have_5_letters": "La parola deve avere 5 lettere.",
+        "word_already_exists": "La parola esiste già.",
+        "you_won": "Hai vinto! 🎉",
+        "game_over": "Game over! Parola corretta: {answer}",
+        "play_again": "Gioca di nuovo",
+        "change_language": "Cambia lingua",
+        "give_up": "Mi arrendo",
+        "show_answer": "Mostra risposta"
     }
 }
 
 KEYBOARDS = {
     "en": ["qwertyuiop", "asdfghjkl", "zxcvbnm"],
     "tr": ["qwertyuıopğü", "asdfghjklşi", "zxcvbnmöç"],
-    "fr": ["azertyuiop", "qsdfghjklm", "wxcvbn"]
+    "fr": ["azertyuiop", "qsdfghjklm", "wxcvbn"],
+    "it": ["qwertyuiop", "asdfghjklò", "zxcvbnm"]
 }
