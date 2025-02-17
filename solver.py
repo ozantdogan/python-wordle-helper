@@ -1,7 +1,8 @@
 import json
 import colorama
 from colorama import Fore, Style
-from options import *
+from config.config import *
+from languages import languages
 from languages.strings import MESSAGES
 from typing import List, Set, Dict
 from collections import defaultdict, Counter
@@ -124,20 +125,12 @@ def colorize_word(word: str, correct_positions: Dict[int, str], used_positions: 
     return colored_word
 
 def main() -> None:
-    lang = input(Fore.CYAN + MESSAGES["en"]["choose_language"] + Style.RESET_ALL).strip().lower()
-    if lang not in OPTIONS["languages"]:
-        print(Fore.RED + MESSAGES["en"]["invalid_language"] + Style.RESET_ALL)
-        lang = "en"
+
+    lang = languages.select()
 
     print(Fore.YELLOW + MESSAGES[lang]["loading_words"] + Style.RESET_ALL)
 
-    file_name = f"languages/{lang}.json"
-    try:
-        with open(file_name, 'r', encoding='utf-8') as file:
-            valid_words = set(json.load(file))
-    except Exception as e:
-        print(Fore.RED + f"Error loading JSON file: {e}" + Style.RESET_ALL)
-        return
+    valid_words = languages.load(lang=lang)
 
     print(Fore.GREEN + MESSAGES[lang]["welcome"] + "\n" + Style.RESET_ALL)
     print(Fore.BLUE + MESSAGES[lang]["patterns"] + "\n" + Style.RESET_ALL)

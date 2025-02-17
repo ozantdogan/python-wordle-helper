@@ -1,4 +1,4 @@
-from options import *
+from config.config import *
 
 MESSAGES = {
     "en": {
@@ -9,7 +9,7 @@ MESSAGES = {
         "no_matches": "No matching words found.",
         "matches_found": "Possible words ({count} matches):",
         "goodbye": "Goodbye!",
-        "choose_language": f"Choose language / Dil seçin ({languages}): ",
+        "choose_language": f"Choose language",
         "invalid_language": "Invalid choice. Defaulting to English...",
         "loading_words": "Loading word list...",
         "word_not_found": "Word not found.",
@@ -18,7 +18,9 @@ MESSAGES = {
         "you_won": "You won! 🎉",
         "game_over": "Game over! Correct word: {answer}",
         "play_again": "Play again",
-        "change_language": "Change language"
+        "change_language": "Change language",
+        "give_up": "Give up",
+        "show_answer": "Show answer"
     },
     "tr": {
         "welcome": "Wordle Yardımcısına Hoş Geldiniz!",
@@ -28,7 +30,7 @@ MESSAGES = {
         "no_matches": "Eşleşen kelime bulunamadı.",
         "matches_found": "Olası kelimeler ({count} eşleşme):",
         "goodbye": "Güle güle!",
-        "choose_language": f"Dil seçin / Choose language ({languages}): ",
+        "choose_language": f"Dil seçin",
         "invalid_language": "Geçersiz seçim. Varsayılan olarak İngilizce seçildi...",
         "loading_words": "Kelime listesi yükleniyor...",
         "word_not_found": "Kelime bulunamadı.",
@@ -37,7 +39,9 @@ MESSAGES = {
         "you_won": "Kazandın! 🎉",
         "game_over": "Oyun bitti! Doğru kelime: {answer}",
         "play_again": "Tekrar oyna",
-        "change_language": "Dil değiştir"
+        "change_language": "Dil değiştir",
+        "give_up": "Pes et",
+        "show_answer": "Cevabı göster"
     },
     "fr": {
         "welcome": "Bienvenue sur l'assistant Wordle !",
@@ -47,7 +51,7 @@ MESSAGES = {
         "no_matches": "Aucun mot correspondant trouvé.",
         "matches_found": "Mots possibles ({count} correspondances) :",
         "goodbye": "Au revoir !",
-        "choose_language": f"Choisissez une langue / Choose language ({languages}) : ",
+        "choose_language": f"Choisissez une langue",
         "invalid_language": "Choix invalide. L'anglais sera utilisé par défaut...",
         "loading_words": "Chargement de la liste des mots...",
         "word_not_found": "Mot non trouvé.",
@@ -56,7 +60,9 @@ MESSAGES = {
         "you_won": "Vous avez gagné ! 🎉",
         "game_over": "Partie terminée ! Le mot correct était : {answer}",
         "play_again": "Rejouer",
-        "change_language": "Changer de langue"
+        "change_language": "Changer de langue",
+        "give_up": "Abandonner",
+        "show_answer": "Afficher la réponse"
     }
 }
 

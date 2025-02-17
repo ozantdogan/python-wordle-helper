@@ -4,7 +4,8 @@ import random
 import os
 from typing import List
 from languages.strings import MESSAGES, KEYBOARDS
-from options import OPTIONS
+from languages import languages
+from config.config import APP_SETTINGS
 
 empty_row = "_ _ _ _ _"
 
@@ -12,8 +13,8 @@ empty_row = "_ _ _ _ _"
 key_status = {}
 
 command_list = {
-    "0": "Give up",
-    "1": "Show answer"
+    "0": "give_up",
+    "1": "show_answer"
 }
 
 def init_key_status(lang: str):
@@ -51,7 +52,7 @@ def initiliaze_board(board, attempts=6):
 
 def load_words(lang: str) -> list:
     """Load word list from JSON file"""
-    file_name = f"languages/{lang}.json"
+    file_name = f"languages/data/{lang}.json"
     try:
         with open(file_name, 'r', encoding='utf-8') as file:
             return list(json.load(file))
@@ -101,13 +102,13 @@ def print_board(board: List[str]):
     for row in board:
         print(row + "\n")
 
-def print_commands(command_list: dict):
+def print_commands(command_list: dict, lang="en"):
     for key, value in command_list.items():
-        print(Fore.LIGHTBLACK_EX + f"{key}. {value}" + Style.RESET_ALL)
+        print(Fore.LIGHTBLACK_EX + f"{key}. {MESSAGES[lang][value]}" + Style.RESET_ALL)
 
 def print_game_state(lang, board_state):
     os.system('cls' if os.name == 'nt' else 'clear')
-    print_commands(command_list)
+    print_commands(command_list, lang)
     print("\n")
     print_board(board_state)
     print_keyboard(lang)
@@ -116,7 +117,7 @@ def launch(lang: str):
 
     result = True
     init_key_status(lang)
-    word_list = [word.lower() for word in load_words(lang)]
+    word_list = [word.lower() for word in languages.load(lang=lang)]
     attempts = 6
 
     random.shuffle(word_list)
@@ -176,15 +177,20 @@ def launch(lang: str):
 
 def choose_language():
 
-    lang = input(Fore.CYAN + MESSAGES["en"]["choose_language"] + Style.RESET_ALL).strip().lower()
-    if lang not in OPTIONS["languages"]:
+    choose_language_message = ""
+    for lang in APP_SETTINGS["languages"]:
+        lang = str(lang)
+        choose_language_message += Fore.CYAN + f"[{lang.upper()}] " + MESSAGES[lang]["choose_language"] + Style.RESET_ALL + "\n"
+
+    lang = input(choose_language_message + "> ").strip().lower()
+    if lang not in APP_SETTINGS["languages"]:
         print(Fore.RED + MESSAGES["en"]["invalid_language"] + Style.RESET_ALL)
         lang = "en"
 
     return lang
 
 def main():
-    lang = choose_language()
+    lang = languages.select()
 
     while(True):
         launch(lang)
