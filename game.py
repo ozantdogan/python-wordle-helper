@@ -11,6 +11,11 @@ empty_row = "_ _ _ _ _"
 # Dynamic keyboard status
 key_status = {}
 
+command_list = {
+    "0": "Give up",
+    "1": "Show answer"
+}
+
 def init_key_status(lang: str):
     """Initialize key statuses based on the selected language"""
     global key_status
@@ -74,9 +79,14 @@ def evaluate(user_input: str, answer: str):
     
     return evaluation
 
-def colorize_guess(user_input: List[str], evaluations):
+def colorize_guess(user_input: List[str], evaluations, left=False):
     """Colorize the guessed word based on the evaluation"""
     result = ""
+    if(left):
+        for i, evaluation in enumerate(evaluations):
+            result += Fore.MAGENTA + user_input[i].upper() + " " + Style.RESET_ALL
+        return result
+
     for i, evaluation in enumerate(evaluations):
         if evaluation == "correct":
             result += Fore.GREEN + user_input[i].upper() + " " + Style.RESET_ALL
@@ -91,6 +101,17 @@ def print_board(board: List[str]):
     for row in board:
         print(row + "\n")
 
+def print_commands(command_list: dict):
+    for key, value in command_list.items():
+        print(Fore.LIGHTBLACK_EX + f"{key}. {value}" + Style.RESET_ALL)
+
+def print_game_state(lang, board_state):
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print_commands(command_list)
+    print("\n")
+    print_board(board_state)
+    print_keyboard(lang)
+
 def launch(lang: str):
 
     result = True
@@ -101,22 +122,31 @@ def launch(lang: str):
     random.shuffle(word_list)
     answer = random.choice(word_list)
     board_state = initiliaze_board([], attempts)
+    board_words = []
+    left = False
 
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print_board(board_state)
-    print_keyboard(lang)
+    print_game_state(lang, board_state)
 
     attempts = 6
     for i in range(attempts):
         while result:
-            user_input = input("> ").lower().strip()
+            if(left):
+                user_input = answer
+            else:
+                user_input = input("> ").lower().strip()
             #Give up
-            if(user_input == '0'):
-                result = False
-                break
+            if(user_input in board_words):
+                print(Fore.RED + MESSAGES[lang]["word_already_exists"] + Style.RESET_ALL)
             elif(user_input == '/show'):
                 print(Fore.MAGENTA + answer + Style.RESET_ALL)
-            elif user_input not in word_list:
+            elif user_input in command_list:
+                if user_input == "0":
+                    user_input = answer
+                    left = True
+                elif user_input == "1":
+                    print(Fore.MAGENTA + answer + Style.RESET_ALL)
+                    continue
+            elif user_input not in word_list and user_input != '0':
                 if(len(user_input) != 5):
                     print(Fore.RED + MESSAGES[lang]["word_must_have_5_letters"] + Style.RESET_ALL)
                 else:
@@ -128,16 +158,17 @@ def launch(lang: str):
                 for j, char in enumerate(user_input):
                     set_key(char, evaluation[j])
 
-                colorized_guess = colorize_guess(user_input, evaluation)
+                board_words.append(user_input)
+                colorized_guess = colorize_guess(user_input, evaluation, left=left)
                 board_state[i] = colorized_guess
                 
-                os.system('cls' if os.name == 'nt' else 'clear')
-                print_board(board_state)
-                print_keyboard(lang)
+                print_game_state(lang, board_state)
 
-                if user_input == answer:
+                if user_input == answer and left == False:
                     print(Fore.GREEN + MESSAGES[lang]["you_won"] + Style.RESET_ALL)
                     return 1
+                elif left == True:
+                    return 2
                 break
     
     print(Fore.LIGHTBLACK_EX + MESSAGES[lang]["game_over"].format(answer=Fore.MAGENTA + answer + Style.RESET_ALL) + Style.RESET_ALL)
