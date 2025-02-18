@@ -16,6 +16,7 @@ command_list = {
 }
 
 lang = "en"
+valid_words = set()
 
 def compute_letter_frequencies(word_list: List[str]):
     """Computes letter frequency overall and per position."""
@@ -132,6 +133,10 @@ def colorize_word(word: str, correct_positions: Dict[int, str], used_positions: 
             colored_word += char
     return colored_word
 
+def load_words() -> set:
+    global valid_words
+    valid_words = languages.load(lang)
+
 def apply_words(input: str, valid_words):
     hints_list = [hint.strip() for hint in input.split(",") if hint.strip()]
 
@@ -159,6 +164,7 @@ def apply_commands(input: str):
     elif input == "1":
         os.system('cls' if os.name == 'nt' else 'clear')
         lang = languages.select()
+        load_words()
         print_screen()
     elif input == "2":
         print_screen()
@@ -180,8 +186,7 @@ def main() -> None:
     run = True
 
     lang = languages.select()
-    valid_words = languages.load(lang=lang)
-
+    load_words()
     print_screen()
 
     while run:
