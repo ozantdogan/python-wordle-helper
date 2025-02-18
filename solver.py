@@ -9,6 +9,14 @@ from collections import defaultdict, Counter
 
 colorama.init(autoreset=True)  # Automatically resets color after each print
 
+command_list = {
+    "0": "exit",
+    "1": "change_language",
+    "2": "clean_screen",
+}
+
+lang = "en"
+
 def compute_letter_frequencies(word_list: List[str]):
     """Computes letter frequency overall and per position."""
     letter_counts = Counter()
@@ -124,43 +132,65 @@ def colorize_word(word: str, correct_positions: Dict[int, str], used_positions: 
             colored_word += char
     return colored_word
 
-def main() -> None:
+def apply_words(input: str, valid_words):
+    hints_list = [hint.strip() for hint in input.split(",") if hint.strip()]
 
-    lang = languages.select()
+    words_that_fit = apply_wordle_filter(hints_list, valid_words)
 
-    print(Fore.YELLOW + MESSAGES[lang]["loading_words"] + Style.RESET_ALL)
+    if words_that_fit:
+        print(Fore.GREEN + MESSAGES[lang]["matches_found"].format(count=len(words_that_fit)) + Style.RESET_ALL)
 
-    valid_words = languages.load(lang=lang)
+        letter_counts, position_counts = compute_letter_frequencies(words_that_fit)
+        word_probabilities = compute_word_probability(words_that_fit, letter_counts, position_counts)
 
+        sorted_words = sorted(word_probabilities.items(), key=lambda x: x[1], reverse=True)
+
+        formatted_output = ", ".join([f"{word}{Fore.LIGHTBLACK_EX}(%{prob*100:.2f}){Style.RESET_ALL}" for word, prob in sorted_words])
+        print(formatted_output)
+
+    else:
+        print(Fore.RED + MESSAGES[lang]["no_matches"] + Style.RESET_ALL)
+
+def apply_commands(input: str):
+    global lang
+    if input == "0":
+        print(Fore.MAGENTA + MESSAGES[lang]["goodbye"] + Style.RESET_ALL)
+        return False
+    elif input == "1":
+        os.system('cls' if os.name == 'nt' else 'clear')
+        lang = languages.select()
+        print_screen()
+    elif input == "2":
+        print_screen()
+    
+    return True
+
+def print_commands():
+    for key, value in command_list.items():
+        print(Fore.LIGHTBLACK_EX + f"{key}. {MESSAGES[lang][value]}" + Style.RESET_ALL)
+
+def print_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
     print(Fore.GREEN + MESSAGES[lang]["welcome"] + "\n" + Style.RESET_ALL)
     print(Fore.BLUE + MESSAGES[lang]["patterns"] + "\n" + Style.RESET_ALL)
+    print_commands()
     print(Fore.CYAN + MESSAGES[lang]["choose_pattern"] + Style.RESET_ALL)
 
-    while True:
+def main() -> None:
+    run = True
+
+    lang = languages.select()
+    valid_words = languages.load(lang=lang)
+
+    print_screen()
+
+    while run:
         user_input: str = input("> ").strip()
-        if user_input.lower() in {"0"}:
-            print(Fore.MAGENTA + MESSAGES[lang]["goodbye"] + Style.RESET_ALL)
-            break
-        elif not user_input:
-            print(Fore.RED + MESSAGES[lang]["invalid_input"] + Style.RESET_ALL)
-            continue
-
-        hints_list = [hint.strip() for hint in user_input.split(",") if hint.strip()]
-        words_that_fit = apply_wordle_filter(hints_list, valid_words)
-
-        if words_that_fit:
-            print(Fore.GREEN + MESSAGES[lang]["matches_found"].format(count=len(words_that_fit)) + Style.RESET_ALL)
-
-            letter_counts, position_counts = compute_letter_frequencies(words_that_fit)
-            word_probabilities = compute_word_probability(words_that_fit, letter_counts, position_counts)
-
-            sorted_words = sorted(word_probabilities.items(), key=lambda x: x[1], reverse=True)
-
-            formatted_output = ", ".join([f"{word}{Fore.LIGHTBLACK_EX}(%{prob*100:.2f}){Style.RESET_ALL}" for word, prob in sorted_words])
-            print(formatted_output)
-
+        if user_input in command_list:
+            run = apply_commands(user_input)
         else:
-            print(Fore.RED + MESSAGES[lang]["no_matches"] + Style.RESET_ALL)
+            apply_words(user_input, valid_words)
 
 if __name__ == "__main__":
     main()
+

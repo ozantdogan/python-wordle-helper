@@ -4,7 +4,7 @@ MESSAGES = {
     "en": {
         "welcome": "Welcome to Wordle Helper!",
         "patterns": f"• {nel}[letter]: A letter that does not exist in the word at all.\n• [lowercase_letter]: A letter that exists in the word but is in the wrong position.\n• [uppercase_letter]: A letter that is in the correct position in the word.",        
-        "choose_pattern": f"Enter your word pattern(s) separated by commas (e.g., {nel}b{nel}aK{nel}e{nel}r,{nel}tOw{nel}e{nel}l), or type '{exit_input}' to exit:",
+        "choose_pattern": f"Enter your word pattern(s) separated by commas (e.g., {nel}b{nel}aK{nel}e{nel}r,{nel}tOw{nel}e{nel}l):",
         "invalid_input": "Invalid input. Please enter a word pattern.",
         "no_matches": "No matching words found.",
         "matches_found": "Possible words ({count} matches):",
@@ -20,12 +20,14 @@ MESSAGES = {
         "play_again": "Play again",
         "change_language": "Change language",
         "give_up": "Give up",
-        "show_answer": "Show answer"
+        "show_answer": "Show answer",
+        "exit":"Exit",
+        "clean_screen": "Clean screen"
     },
     "tr": {
         "welcome": "Wordle Yardımcısına Hoş Geldiniz!",
         "patterns": f"\n• {nel}[harf]: Kelimede hiç bulunmayan harf. Bu harf, kelimenin hiçbir yerinde yer almaz.\n• [küçük_harf]: Kelimede bulunan ancak yanlış konumda olan harf. Bu harf doğru konumda değil.\n• [büyük_harf]: Kelimede doğru konumda bulunan harf. Bu harf, kelimenin doğru pozisyonundadır.",        
-        "choose_pattern": f"Kelime desen(ler)inizi virgülle ayırarak girin (örn. {nel}a{nel}ş{nel}uR{nel}e,{nel}e{nel}krA{nel}n), çıkmak için '{exit_input}' yazın:",
+        "choose_pattern": f"Kelime desen(ler)inizi virgülle ayırarak girin (örn. {nel}a{nel}ş{nel}uR{nel}e,{nel}e{nel}krA{nel}n):",
         "invalid_input": "Geçersiz giriş. Lütfen bir kelime deseni girin.",
         "no_matches": "Eşleşen kelime bulunamadı.",
         "matches_found": "Olası kelimeler ({count} eşleşme):",
@@ -41,12 +43,14 @@ MESSAGES = {
         "play_again": "Tekrar oyna",
         "change_language": "Dil değiştir",
         "give_up": "Pes et",
-        "show_answer": "Cevabı göster"
+        "show_answer": "Cevabı göster",
+        "exit":"Çıkış",
+        "clean_screen": "Ekranı temizle"
     },
     "fr": {
         "welcome": "Bienvenue sur l'assistant Wordle !",
         "patterns": f"• {nel}[lettre] : Une lettre qui n'existe pas du tout dans le mot.\n• [lettre_minuscule] : Une lettre qui existe dans le mot mais est mal placée.\n• [LETTRE_MAJUSCULE] : Une lettre qui est bien placée dans le mot.",        
-        "choose_pattern": f"Entrez votre ou vos modèles de mots, séparés par des virgules (ex. {nel}b{nel}oN{nel}j{nel}o{nel}u,{nel}pOu{nel}r{nel}q{nel}u), ou tapez '{exit_input}' pour quitter :",
+        "choose_pattern": f"Entrez votre ou vos modèles de mots, séparés par des virgules (ex. {nel}b{nel}oN{nel}j{nel}o{nel}u,{nel}pOu{nel}r{nel}q{nel}u):",
         "invalid_input": "Entrée invalide. Veuillez entrer un modèle de mot.",
         "no_matches": "Aucun mot correspondant trouvé.",
         "matches_found": "Mots possibles ({count} correspondances) :",
@@ -62,12 +66,14 @@ MESSAGES = {
         "play_again": "Rejouer",
         "change_language": "Changer de langue",
         "give_up": "Abandonner",
-        "show_answer": "Afficher la réponse"
+        "show_answer": "Afficher la réponse",
+        "exit": "Quitter",
+        "clean_screen": "Nettoyer l'écran"
     },
     "it": {
         "welcome": "Benvenuto in Wordle Helper!",
         "patterns": f"• {nel}[lettera]: Una lettera che non esiste affatto nella parola.\n• [lettera minuscola]: Una lettera che esiste nella parola ma è nella posizione sbagliata.\n• [LETTERA MAIUSCOLA]: Una lettera che è nella posizione corretta nella parola.",        
-        "choose_pattern": f"Inserisci il tuo schema di parole separato da virgole (es. {nel}b{nel}aK{nel}e{nel}r,{nel}tOw{nel}e{nel}l), oppure digita '{exit_input}' per uscire:",
+        "choose_pattern": f"Inserisci il tuo schema di parole separato da virgole (es. {nel}b{nel}aK{nel}e{nel}r,{nel}tOw{nel}e{nel}l):",
         "invalid_input": "Input non valido. Inserisci uno schema di parola.",
         "no_matches": "Nessuna parola corrispondente trovata.",
         "matches_found": "Parole possibili ({count} corrispondenze):",
@@ -83,7 +89,9 @@ MESSAGES = {
         "play_again": "Gioca di nuovo",
         "change_language": "Cambia lingua",
         "give_up": "Mi arrendo",
-        "show_answer": "Mostra risposta"
+        "show_answer": "Mostra risposta",
+        "exit":"Esci",
+        "clean_screen": "Schermo pulito"
     }
 }
 

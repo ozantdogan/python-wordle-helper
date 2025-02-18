@@ -6,10 +6,8 @@ APP_SETTINGS = {
     "wildcard": ".",
     "non_existing_letter": "-",
     "languages": ["en", "tr", "fr", "it"],
-    "exit_input": "0"
 }
 
 nel = APP_SETTINGS["non_existing_letter"]
 languages = " | ".join(APP_SETTINGS["languages"])
-exit_input = APP_SETTINGS["exit_input"]
 wildcard = APP_SETTINGS["wildcard"]
