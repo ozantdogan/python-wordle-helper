@@ -7,7 +7,7 @@ def select():
     choose_language_message = ""
     for lang in APP_SETTINGS["languages"]:
         lang = str(lang)
-        choose_language_message += Fore.CYAN + f"[{lang.upper()}] " + MESSAGES[lang]["choose_language"] + Style.RESET_ALL + "\n"
+        choose_language_message += Fore.CYAN + f"[{lang.lower()}] " + MESSAGES[lang]["choose_language"] + Style.RESET_ALL + "\n"
 
     lang = input(choose_language_message + "> ").strip().lower()
     if lang not in APP_SETTINGS["languages"]:

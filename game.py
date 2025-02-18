@@ -175,20 +175,6 @@ def launch(lang: str):
     print(Fore.LIGHTBLACK_EX + MESSAGES[lang]["game_over"].format(answer=Fore.MAGENTA + answer + Style.RESET_ALL) + Style.RESET_ALL)
     return 0
 
-def choose_language():
-
-    choose_language_message = ""
-    for lang in APP_SETTINGS["languages"]:
-        lang = str(lang)
-        choose_language_message += Fore.CYAN + f"[{lang.upper()}] " + MESSAGES[lang]["choose_language"] + Style.RESET_ALL + "\n"
-
-    lang = input(choose_language_message + "> ").strip().lower()
-    if lang not in APP_SETTINGS["languages"]:
-        print(Fore.RED + MESSAGES["en"]["invalid_language"] + Style.RESET_ALL)
-        lang = "en"
-
-    return lang
-
 def main():
     lang = languages.select()
 
@@ -201,7 +187,7 @@ def main():
             continue
         elif(user_input == '2'):
             os.system('cls' if os.name == 'nt' else 'clear')
-            lang = choose_language()
+            lang = languages.select()
         else:
             break
 
