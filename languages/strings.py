@@ -22,7 +22,7 @@ MESSAGES = {
         "give_up": "Give up",
         "show_answer": "Show answer",
         "exit":"Exit",
-        "clean_screen": "Clean screen"
+        "clear_screen": "Clear screen"
     },
     "tr": {
         "welcome": "Wordle Yardımcısına Hoş Geldiniz!",
@@ -45,7 +45,7 @@ MESSAGES = {
         "give_up": "Pes et",
         "show_answer": "Cevabı göster",
         "exit":"Çıkış",
-        "clean_screen": "Ekranı temizle"
+        "clear_screen": "Ekranı temizle"
     },
     "fr": {
         "welcome": "Bienvenue sur l'assistant Wordle !",
@@ -68,7 +68,7 @@ MESSAGES = {
         "give_up": "Abandonner",
         "show_answer": "Afficher la réponse",
         "exit": "Quitter",
-        "clean_screen": "Nettoyer l'écran"
+        "clear_screen": "Nettoyer l'écran"
     },
     "it": {
         "welcome": "Benvenuto in Wordle Helper!",
@@ -91,7 +91,7 @@ MESSAGES = {
         "give_up": "Mi arrendo",
         "show_answer": "Mostra risposta",
         "exit":"Esci",
-        "clean_screen": "Schermo pulito"
+        "clear_screen": "Schermo pulito"
     }
 }
 
@@ -100,4 +100,8 @@ KEYBOARDS = {
     "tr": ["qwertyuıopğü", "asdfghjklşi", "zxcvbnmöç"],
     "fr": ["azertyuiop", "qsdfghjklm", "wxcvbn"],
     "it": ["qwertyuiop", "asdfghjklò", "zxcvbnm"]
+}
+
+DICTIONARY = {
+    "en": "https://api.dictionaryapi.dev/api/v2/entries/en/{word}"
 }

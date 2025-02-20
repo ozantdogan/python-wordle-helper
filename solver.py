@@ -10,9 +10,9 @@ from collections import defaultdict, Counter
 colorama.init(autoreset=True)  # Automatically resets color after each print
 
 command_list = {
-    "0": "exit",
+    "0": "clear_screen",
     "1": "change_language",
-    "2": "clean_screen",
+    "2": "exit",
 }
 
 lang = "en"
@@ -158,15 +158,16 @@ def apply_words(input: str, valid_words):
 
 def apply_commands(input: str):
     global lang
-    if input == "0":
+    command = command_list[input]
+    if command == "exit":
         print(Fore.MAGENTA + MESSAGES[lang]["goodbye"] + Style.RESET_ALL)
         return False
-    elif input == "1":
+    elif command == "change_language":
         os.system('cls' if os.name == 'nt' else 'clear')
         lang = languages.select()
         load_words()
         print_screen()
-    elif input == "2":
+    elif command == "clear_screen":
         print_screen()
     
     return True

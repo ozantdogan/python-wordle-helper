@@ -80,10 +80,10 @@ def evaluate(user_input: str, answer: str):
     
     return evaluation
 
-def colorize_guess(user_input: List[str], evaluations, left=False):
+def colorize_guess(user_input: List[str], evaluations, state="inprogress"):
     """Colorize the guessed word based on the evaluation"""
     result = ""
-    if(left):
+    if(state == "left"):
         for i, evaluation in enumerate(evaluations):
             result += Fore.MAGENTA + user_input[i].upper() + " " + Style.RESET_ALL
         return result
@@ -115,27 +115,24 @@ def print_game_state(lang, board_state):
 
 def launch(lang: str):
 
-    result = True
+    state = "inprogress"
     init_key_status(lang)
     word_list = [word.lower() for word in languages.load(lang=lang)]
     attempts = 6
 
     random.shuffle(word_list)
     answer = random.choice(word_list)
+    meaning = languages.get_meaning(answer, lang)
     board_state = initiliaze_board([], attempts)
     board_words = []
-    left = False
 
     print_game_state(lang, board_state)
 
     attempts = 6
     for i in range(attempts):
-        while result:
-            if(left):
-                user_input = answer
-            else:
-                user_input = input("> ").lower().strip()
-            #Give up
+        while state == "inprogress":
+            user_input = input("> ").lower().strip()
+
             if(user_input in board_words):
                 print(Fore.RED + MESSAGES[lang]["word_already_exists"] + Style.RESET_ALL)
             elif(user_input == '/show'):
@@ -143,7 +140,7 @@ def launch(lang: str):
             elif user_input in command_list:
                 if user_input == "0":
                     user_input = answer
-                    left = True
+                    state = "left"
                 elif user_input == "1":
                     print(Fore.MAGENTA + answer + Style.RESET_ALL)
                     continue
@@ -160,20 +157,25 @@ def launch(lang: str):
                     set_key(char, evaluation[j])
 
                 board_words.append(user_input)
-                colorized_guess = colorize_guess(user_input, evaluation, left=left)
+                colorized_guess = colorize_guess(user_input, evaluation, state)
                 board_state[i] = colorized_guess
                 
                 print_game_state(lang, board_state)
 
-                if user_input == answer and left == False:
-                    print(Fore.GREEN + MESSAGES[lang]["you_won"] + Style.RESET_ALL)
-                    return 1
-                elif left == True:
-                    return 2
+                if user_input == answer and state != "left":
+                    state = "won"
                 break
-    
-    print(Fore.LIGHTBLACK_EX + MESSAGES[lang]["game_over"].format(answer=Fore.MAGENTA + answer + Style.RESET_ALL) + Style.RESET_ALL)
-    return 0
+
+
+    if(state == "won"):
+        print(Fore.GREEN + MESSAGES[lang]["you_won"] + Style.RESET_ALL)
+    else:
+        print(Fore.LIGHTBLACK_EX + MESSAGES[lang]["game_over"].format(answer=Fore.MAGENTA + answer + Style.RESET_ALL) + Style.RESET_ALL)
+
+    if(meaning):
+        print(meaning + "\n")
+
+    return 
 
 def main():
     lang = languages.select()
