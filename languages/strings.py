@@ -103,5 +103,6 @@ KEYBOARDS = {
 }
 
 DICTIONARY = {
-    "en": "https://api.dictionaryapi.dev/api/v2/entries/en/{word}"
+    "en": "https://api.dictionaryapi.dev/api/v2/entries/en/{word}",
+    "tr": "https://sozluk.gov.tr/gts?ara={word}"
 }
