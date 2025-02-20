@@ -1,17 +1,18 @@
-from config.config import APP_SETTINGS
+import config.config as config
 from colorama import Fore, Style
 from languages.strings import MESSAGES, DICTIONARY
 import json
 import requests
+from requests.exceptions import RequestException
 
 def select():
     choose_language_message = ""
-    for lang in APP_SETTINGS["languages"]:
+    for lang in config.APP_SETTINGS["languages"]:
         lang = str(lang)
         choose_language_message += Fore.CYAN + f"[{lang.lower()}] " + MESSAGES[lang]["choose_language"] + Style.RESET_ALL + "\n"
 
     lang = input(choose_language_message + "> ").strip().lower()
-    if lang not in APP_SETTINGS["languages"]:
+    if lang not in config.APP_SETTINGS["languages"]:
         print(Fore.RED + MESSAGES["en"]["invalid_language"] + Style.RESET_ALL)
         lang = "en"
 
@@ -27,18 +28,22 @@ def load(lang):
     
     return valid_words
 
-ITALIC = "\033[3m"
-RESET = "\033[0m"
-
 def get_meaning(word: str, lang):
+    ITALIC = "\033[3m"
+    RESET = "\033[0m"
+
     url = DICTIONARY.get(lang, "")
     if not url:
         return ""
     
     if lang == "en":
         url = url.format(word=word)
-        response = requests.get(url=url)
-        data = response.json()
+        try:
+            response = requests.get(url=url, timeout=5)  # Added timeout for better handling
+            response.raise_for_status()  # Raises an HTTPError for bad responses (4xx and 5xx)
+            data = response.json()
+        except RequestException as e:
+            return ""
 
         if "title" in data and data["title"] == "No Definitions Found":
             return f""
